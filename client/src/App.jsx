@@ -6,6 +6,7 @@ import Tarefas from './pages/Tarefas'
 import Importante from './pages/Importante'
 import Concluidas from './pages/Concluidas'
 import AFazer from './pages/AFazer'
+import Excluidas from './pages/Excluidas'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/importante" element={<Layout><Importante /></Layout>} />
           <Route path="/concluidas" element={<Layout><Concluidas /></Layout>} />
           <Route path="/afazer" element={<Layout><AFazer /></Layout>} />
+          <Route path="/excluidas" element={<Layout><Excluidas /></Layout>} />
         </Routes>
       </Router>
     </>
