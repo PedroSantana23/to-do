@@ -2,13 +2,9 @@ import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
 
 export class TaskController {
-    async index(req: Request, res: Response) {
-        const tasks = await prisma.task.findMany();
-        return res.json({ tasks });
-    }
 
     // CREATE
-    async create(req: Request, res: Response) {
+    async criarTarefa(req: Request, res: Response) {
         const { titulo, descricao, userId } = req.body;
 
         if (!titulo) {
@@ -33,28 +29,56 @@ export class TaskController {
         }
     }
 
-    // DELETE
-    async delete(req: Request, res: Response) {
-        const { id } = req.params;
+    // READ
+    async Tarefas(req: Request, res: Response) {
+        const tasks = await prisma.task.findMany();
+        return res.json({ tasks });
+    }
 
-        if (!id) {
-            return res.status(400).json({ error: "ID is required" });
+    async TarefasExcluidas(req: Request, res: Response) {
+        const tasks = await prisma.task.findMany({
+            where: {
+                excluido: true,
+            },
+        });
+
+        if (!tasks) {
+            return res.status(404).json({ error: "Não há tarefas excluídas" });
         }
 
-        try {
-            await prisma.task.delete({
-                where: {
-                    id: Number(id),
-                },
-            });
-            return res.status(204).send();
-        } catch (error) {
-            return res.status(500).json({ error: "Falha ao deletar tarefa", details: error });
+        return res.json({ tasks });
+    }
+
+    async TarefasAFazer(req: Request, res: Response) {
+        const tasks = await prisma.task.findMany({
+            where: {
+                status: "pendente",
+            },
+        });
+
+        if (!tasks) {
+            return res.status(404).json({ error: "Não há tarefas a fazer" });
         }
+
+        return res.json({ tasks });
+    }
+
+    async TarefasImportantes(req: Request, res: Response) {
+        const tasks = await prisma.task.findMany({
+            where: {
+                isImportant: true,
+            },
+        });
+
+        if (!tasks) {
+            return res.status(404).json({ error: "Não há tarefas importantes" });
+        }
+
+        return res.json({ tasks });
     }
 
     // UPDATE
-    async update(req: Request, res: Response) {
+    async AtualizarTarefa(req: Request, res: Response) {
         const { id } = req.params;
         const { titulo, descricao, status } = req.body;
 
@@ -79,7 +103,7 @@ export class TaskController {
         }
     }
 
-    async updateStatusTask(req: Request, res: Response) {
+    async AtualizarStatusDaTarefa(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
@@ -106,7 +130,7 @@ export class TaskController {
         }
     }
 
-    async updateImportantTask(req: Request, res: Response) {
+    async AtulizarTarefaParaImportante(req: Request, res: Response) {
         const { id } = req.params;
     
         if (!id) {
@@ -140,6 +164,30 @@ export class TaskController {
             return res.json({ message, task: updatedTask });
         } catch (error) {
             return res.status(500).json({ error: "Failed to update task", details: error });
+        }
+    }
+
+    
+    // DELETE
+    async ExcluirTarefa(req: Request, res: Response) {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ error: "ID is required" });
+        }
+
+        try {
+            await prisma.task.update({
+                where: {
+                    id: Number(id),
+                },
+                data: {
+                    excluido: true,
+            }});
+
+            return res.json({ message: "Tarefa excluída" });
+        } catch (error) {
+            return res.status(500).json({ error: "Falha ao excluir tarefa", details: error });
         }
     }
 }

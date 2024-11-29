@@ -16,9 +16,12 @@ router.get("/index", AuthMiddlewares, userController.index);
 router.post("/auth", authController.authenticate);
 
 // Tasks Routes
-router.get("/tasks", AuthMiddlewares, taskController.index);
-router.post("/createtask", AuthMiddlewares, taskController.create);
-router.delete("/deletetask/:id", AuthMiddlewares, taskController.delete);
-router.put("/updatetask/:id", AuthMiddlewares, taskController.update);
-router.put("/updatetaskstatus/:id", AuthMiddlewares, taskController.updateStatusTask);
-router.put("/updateimportanttask/:id", AuthMiddlewares, taskController.updateImportantTask);
+router.get("/tasks", AuthMiddlewares, taskController.Tarefas);
+router.get("/tasksdeleted", AuthMiddlewares, taskController.TarefasExcluidas);
+router.get("/tasksafazer", AuthMiddlewares, taskController.TarefasAFazer);
+router.get("/tasksimportantes", AuthMiddlewares, taskController.TarefasImportantes);
+router.post("/createtask", AuthMiddlewares, taskController.criarTarefa);
+router.put("/deletetask/:id", AuthMiddlewares, taskController.ExcluirTarefa);
+router.put("/updatetask/:id", AuthMiddlewares, taskController.AtualizarTarefa);
+router.put("/updatetaskstatus/:id", AuthMiddlewares, taskController.AtualizarStatusDaTarefa);
+router.put("/updateimportanttask/:id", AuthMiddlewares, taskController.AtulizarTarefaParaImportante);

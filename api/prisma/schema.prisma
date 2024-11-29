@@ -30,5 +30,6 @@ model Task {
   status       String   @default("pendente")
   userId       Int    
   isImportant  Boolean  @default(false)  
+  excluido     Boolean  @default(false)
   user         User     @relation(fields: [userId], references: [id])
 }
