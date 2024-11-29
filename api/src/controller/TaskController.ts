@@ -29,7 +29,7 @@ export class TaskController {
             });
             return res.status(201).json({ task });
         } catch (error) {
-            return res.status(500).json({ error: "Failed to create task", details: error });
+            return res.status(500).json({ error: "Falha ao criar tarefa", details: error });
         }
     }
 
@@ -49,7 +49,7 @@ export class TaskController {
             });
             return res.status(204).send();
         } catch (error) {
-            return res.status(500).json({ error: "Failed to delete task", details: error });
+            return res.status(500).json({ error: "Falha ao deletar tarefa", details: error });
         }
     }
 
@@ -101,6 +101,43 @@ export class TaskController {
             }
 
             return res.json({ task });
+        } catch (error) {
+            return res.status(500).json({ error: "Failed to update task", details: error });
+        }
+    }
+
+    async updateImportantTask(req: Request, res: Response) {
+        const { id } = req.params;
+    
+        if (!id) {
+            return res.status(400).json({ error: "ID is required" });
+        }
+    
+        try {
+            const task = await prisma.task.findUnique({
+                where: {
+                    id: Number(id),
+                },
+            });
+    
+            if (!task) {
+                return res.status(404).json({ error: "Task not found" });
+            }
+    
+            const updatedTask = await prisma.task.update({
+                where: {
+                    id: Number(id),
+                },
+                data: {
+                    isImportant: !task.isImportant,
+                },
+            });
+    
+            const message = updatedTask.isImportant
+                ? "Tarefa marcada como importante"
+                : "Tarefa não é mais importante";
+    
+            return res.json({ message, task: updatedTask });
         } catch (error) {
             return res.status(500).json({ error: "Failed to update task", details: error });
         }

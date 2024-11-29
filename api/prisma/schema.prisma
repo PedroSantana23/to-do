@@ -28,6 +28,7 @@ model Task {
   data_criacao DateTime @default(now())
   data_prazo   DateTime?
   status       String   @default("pendente")
-  userId       Int      
+  userId       Int    
+  isImportant  Boolean  @default(false)  
   user         User     @relation(fields: [userId], references: [id])
 }
