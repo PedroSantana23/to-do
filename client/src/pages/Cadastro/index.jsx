@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { api } from "../../services/api";
 
 const FullPage = styled.div`
   height: 100vh;
@@ -62,20 +64,33 @@ const StyledLink = styled(Link)`
 `;
 
 const Cadastro = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+    const data = {
+      email, password, name
+    }
+
+    const response = await api.post("/create", data);
+    console.log(response.data);
+  }
+
   return (
     <FullPage>
-      <Form>
+      <Form onSubmit={handleSaveUser}>
         <h1>Cadastrar</h1>
         <InputContainer>
           <span>E-mail</span>
-          <Input type="email" placeholder="Digite seu e-mail"></Input>
+          <Input type="email" placeholder="Digite seu e-mail" value={email} onChange={(e) => setEmail(e.target.value)}></Input>
           <span>Nome</span>
-          <Input type="email" placeholder="Digite seu nome"></Input>
+          <Input type="text" placeholder="Digite seu nome" value={name} onChange={(e) => setName(e.target.value)}></Input>
           <span>Senha</span>
-          <Input type="password" placeholder="Digite sua senha"></Input>
-          <Input type="password" placeholder="Repita a senha"></Input>
+          <Input type="password" placeholder="Digite sua senha" value={password} onChange={(e) => setPassword(e.target.value)}></Input>
         </InputContainer>
-        <Button>Cadastrar</Button>
+        <Button type="submit">Cadastrar</Button>
         <StyledLink to="/">Voltar para o Login</StyledLink>
       </Form>
     </FullPage>
