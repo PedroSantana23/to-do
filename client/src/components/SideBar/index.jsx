@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Layers3, ListChecks, LayoutList, OctagonAlert, LogOut, Trash } from 'lucide-react';
+import { Layers3, ListChecks, LayoutList, OctagonAlert, LogOut, Trash, PlusCircle } from 'lucide-react';
 
 const SideBarContainer = styled.div`
     width: 20vw;
@@ -55,6 +55,7 @@ const SideBar = () => {
     return (
         <SideBarContainer>
             <MenuItemsContainer>
+                <MenuItem to="/adctarefas" active={activeItem === "adctarefas"} onClick={() => setActiveItem("adctarefas")}><PlusCircle />Adicionar Tarefas</MenuItem>
                 <MenuItem to="/tarefas" active={activeItem === "tarefas"} onClick={() => setActiveItem("tarefas")}><Layers3 />Tarefas</MenuItem>
                 <MenuItem to="/importante" active={activeItem === "importante"} onClick={() => setActiveItem("importante")}><OctagonAlert />Importante</MenuItem>
                 <MenuItem to="/concluidas" active={activeItem === "concluidas"} onClick={() => setActiveItem("concluidas")}><ListChecks />Concluídas</MenuItem>

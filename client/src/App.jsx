@@ -7,6 +7,7 @@ import Importante from './pages/Importante'
 import Concluidas from './pages/Concluidas'
 import AFazer from './pages/AFazer'
 import Excluidas from './pages/Excluidas'
+import AdcTarefas from './pages/Adctarefas'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Login/>} />
           <Route path="/cadastrar" element={<Cadastro />} />
           <Route path="/home" element={<Layout />} />
+          <Route path="/adctarefas" element={<Layout> <AdcTarefas/></Layout>} />
           <Route path="/tarefas" element={<Layout><Tarefas /></Layout>} />
           <Route path="/importante" element={<Layout><Importante /></Layout>} />
           <Route path="/concluidas" element={<Layout><Concluidas /></Layout>} />
